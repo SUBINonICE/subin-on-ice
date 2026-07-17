@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="About Subin, the adult figure skater behind Subin on Ice." />
+  <meta name="theme-color" content="#dcdcff" />
+  <title>About Subin — Subin on Ice</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="about-page-body">
+  <div class="page-glow page-glow-one" aria-hidden="true"></div>
+  <div class="page-glow page-glow-two" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Subin on Ice home">
+      <span class="brand-mark">S</span>
+      <span>SUBIN ON ICE</span>
+    </a>
+    <nav class="nav-links about-page-nav" aria-label="Main navigation">
+      <a href="index.html#map">Map</a>
+      <a href="index.html#archive">Archive</a>
+      <a class="is-current" href="about.html">About</a>
+    </nav>
+    <button class="menu-button" type="button" aria-label="Toggle menu" aria-expanded="false">Menu</button>
+  </header>
+
+  <main class="about-page-main">
+    <section class="about-page-hero section-shell">
+      <div class="eyebrow">ABOUT SUBIN</div>
+      <h1>A skater, a researcher,<br /><em>and a collector of rinks.</em></h1>
+      <p class="about-page-lede">
+        I started figure skating on September 10, 2024. Since then, each rink has become part practice space, part travel memory, and part personal archive.
+      </p>
+    </section>
+
+    <section class="section-shell about-story-grid">
+      <article class="about-story-card about-story-main">
+        <div class="eyebrow">MY STORY</div>
+        <h2>Why this archive exists</h2>
+        <p>
+          I am an adult figure skater from Korea and a member of the Northwestern University figure skating club. Outside the rink, I am pursuing a PhD in civil engineering.
+        </p>
+        <p>
+          My dream is to visit as many ice rinks as possible. I currently skate mostly in the United States and Korea, but I hope this archive eventually grows across countries and continents.
+        </p>
+        <p>
+          I review only rinks I have personally visited. I pay attention to the details that matter during a real practice session: ice quality, usable practice space, facilities, value, atmosphere, and how easy it is to return.
+        </p>
+      </article>
+
+      <aside class="about-facts-card">
+        <div class="about-fact">
+          <span>Started skating</span>
+          <strong>September 10, 2024</strong>
+        </div>
+        <div class="about-fact">
+          <span>Skating community</span>
+          <strong>Northwestern Figure Skating Club</strong>
+        </div>
+        <div class="about-fact">
+          <span>Academic life</span>
+          <strong>PhD student in Civil Engineering</strong>
+        </div>
+        <div class="about-fact">
+          <span>Home country</span>
+          <strong>South Korea</strong>
+        </div>
+        <div class="about-fact">
+          <span>Archive goal</span>
+          <strong>Rinks around the world</strong>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section-shell about-manifesto">
+      <div class="eyebrow">THE DREAM</div>
+      <blockquote>
+        “To keep skating, keep traveling, and leave a thoughtful record of every rink I meet along the way.”
+      </blockquote>
+      <a class="primary-button" href="index.html#archive">Browse the rink archive</a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>SUBIN ON ICE</span>
+    <span>One rink at a time.</span>
+    <span id="copyright-year"></span>
+  </footer>
+
+  <script>
+    const menuButton = document.querySelector('.menu-button');
+    const navLinks = document.querySelector('.nav-links');
+    if (menuButton && navLinks) {
+      menuButton.addEventListener('click', () => {
+        const open = navLinks.classList.toggle('is-open');
+        menuButton.setAttribute('aria-expanded', String(open));
+      });
+    }
+    document.getElementById('copyright-year').textContent = `© ${new Date().getFullYear()} Subin`;
+  </script>
+</body>
+</html>

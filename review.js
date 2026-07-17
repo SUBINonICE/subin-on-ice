@@ -23,6 +23,7 @@
         </div>
         <div class="score-track" aria-label="${label}: ${value} out of 5"><i style="width:${fillWidth}"></i></div>
         <p>${note}</p>
+        ${label === 'Practice Space' ? '<div class="practice-space-note">A higher score means more usable room for practice, not a higher crowd level.</div>' : ''}
       </article>
     `;
   }).join('');
