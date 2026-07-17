@@ -152,73 +152,100 @@
   }
 
   const mapElement = document.getElementById('rink-map');
-  if (!mapElement) return;
+  const markersLayer = document.getElementById('atlas-markers');
+  const popup = document.getElementById('atlas-popup');
 
-  if (typeof L === 'undefined') {
-    mapElement.innerHTML = '<div class="map-fallback"><strong>The interactive map could not load.</strong><br />You can still open each rink from the archive below.</div>';
-    return;
-  }
+  if (mapElement && markersLayer && popup) {
+    const bounds = {
+      latMin: 41.95,
+      latMax: 42.14,
+      lonMin: -87.85,
+      lonMax: -87.62
+    };
 
-  const map = L.map('rink-map', {
-    scrollWheelZoom: false,
-    zoomControl: false,
-    preferCanvas: true
-  });
+    const projectToMap = ([lat, lon]) => {
+      const x = ((lon - bounds.lonMin) / (bounds.lonMax - bounds.lonMin)) * 100;
+      const y = ((bounds.latMax - lat) / (bounds.latMax - bounds.latMin)) * 100;
+      return {
+        x: Math.max(7, Math.min(88, x)),
+        y: Math.max(12, Math.min(86, y))
+      };
+    };
 
-  L.control.zoom({ position: 'bottomright' }).addTo(map);
+    const closePopup = () => {
+      popup.classList.remove('is-open');
+      popup.setAttribute('aria-hidden', 'true');
+      markersLayer.querySelectorAll('.atlas-marker').forEach((marker) => {
+        marker.classList.remove('is-active');
+        marker.setAttribute('aria-expanded', 'false');
+      });
+    };
 
-  const tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    subdomains: 'abcd',
-    maxZoom: 20,
-    attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
-  }).addTo(map);
+    const openPopup = (rink, marker) => {
+      const overall = averageRating(rink);
+      popup.innerHTML = `
+        <button class="atlas-popup-close" type="button" aria-label="Close rink preview">×</button>
+        <span class="atlas-popup-badge">${rink.badge}</span>
+        <h3>${rink.name}</h3>
+        <p class="atlas-popup-location">${rink.city}, ${rink.state}</p>
+        <p class="atlas-popup-quote">“${rink.quickTake}”</p>
+        <div class="atlas-popup-scores">
+          <div><strong>${overall}</strong><span>Overall</span></div>
+          <div><strong>${rink.ratings['Ice Quality']}</strong><span>Ice</span></div>
+          <div><strong>${rink.ratings['Practice Space']}</strong><span>Space</span></div>
+        </div>
+        <div class="atlas-popup-actions">
+          <a class="atlas-review-link" href="review.html?id=${encodeURIComponent(rink.id)}">Full review →</a>
+          <a class="atlas-google-link" href="${rink.mapUrl}" target="_blank" rel="noopener noreferrer">Google Maps ↗</a>
+        </div>
+      `;
 
-  let tileErrorCount = 0;
-  tileLayer.on('tileerror', () => {
-    tileErrorCount += 1;
-    if (tileErrorCount === 1) {
-      console.warn('A map tile failed to load. The browser may retry automatically.');
-    }
-  });
+      markersLayer.querySelectorAll('.atlas-marker').forEach((node) => {
+        const selected = node === marker;
+        node.classList.toggle('is-active', selected);
+        node.setAttribute('aria-expanded', String(selected));
+      });
 
-  const bounds = [];
+      popup.classList.add('is-open');
+      popup.setAttribute('aria-hidden', 'false');
+      popup.querySelector('.atlas-popup-close')?.addEventListener('click', closePopup);
+    };
 
-  RINKS.forEach((rink) => {
-    const icon = L.divIcon({
-      className: 'custom-rink-marker-wrap',
-      html: `<span class="custom-rink-marker ${rink.isHomeRink ? 'home-marker' : ''}" aria-label="${rink.name}"><i>✦</i></span>`,
-      iconSize: [44, 52],
-      iconAnchor: [22, 45],
-      popupAnchor: [0, -42]
+    RINKS.forEach((rink) => {
+      const point = projectToMap(rink.coordinates);
+      const marker = document.createElement('button');
+      const labelSide = point.x > 58 ? 'label-left' : 'label-right';
+      marker.type = 'button';
+      marker.className = `atlas-marker ${rink.isHomeRink ? 'is-home' : ''} ${labelSide}`;
+      marker.style.left = `${point.x}%`;
+      marker.style.top = `${point.y}%`;
+      marker.dataset.rinkId = rink.id;
+      marker.setAttribute('aria-label', `Preview ${rink.name}`);
+      marker.setAttribute('aria-expanded', 'false');
+      marker.innerHTML = `
+        <span class="atlas-marker-pulse" aria-hidden="true"></span>
+        <span class="atlas-marker-core" aria-hidden="true">✦</span>
+        <span class="atlas-marker-label">${rink.shortName}</span>
+      `;
+      marker.addEventListener('click', (event) => {
+        event.stopPropagation();
+        if (marker.classList.contains('is-active')) {
+          closePopup();
+        } else {
+          openPopup(rink, marker);
+        }
+      });
+      markersLayer.appendChild(marker);
     });
 
-    const marker = L.marker(rink.coordinates, { icon, title: rink.name }).addTo(map);
-    const overall = averageRating(rink);
+    mapElement.addEventListener('click', (event) => {
+      if (!event.target.closest('.atlas-popup') && !event.target.closest('.atlas-marker')) {
+        closePopup();
+      }
+    });
 
-    marker.bindPopup(`
-      <article class="map-popup-card">
-        <span class="map-popup-badge">${rink.badge}</span>
-        <h3>${rink.name}</h3>
-        <p>${rink.city}, ${rink.state}</p>
-        <div class="map-popup-scores">
-          <span><strong>${overall}</strong> overall</span>
-          <span><strong>${rink.ratings['Ice Quality']}</strong> ice</span>
-        </div>
-        <a href="review.html?id=${encodeURIComponent(rink.id)}">View full review →</a>
-      </article>
-    `, { maxWidth: 310 });
-
-    bounds.push(rink.coordinates);
-  });
-
-  if (bounds.length === 1) {
-    map.setView(bounds[0], 13);
-  } else {
-    map.fitBounds(bounds, { padding: [80, 80], maxZoom: 12 });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closePopup();
+    });
   }
-
-  const refreshMap = () => map.invalidateSize({ animate: false });
-  window.setTimeout(refreshMap, 100);
-  window.setTimeout(refreshMap, 500);
-  window.addEventListener('resize', refreshMap);
 })();
