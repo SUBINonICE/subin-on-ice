@@ -67,74 +67,25 @@
         </div>
         <p>Tap a pin to preview a rink, then open the full review.</p>
       </div>
-      <div class="map-frame atlas-frame">
-        <div id="rink-map" class="atlas-map" aria-label="Illustrated map of reviewed ice rinks on Chicago's North Shore">
-          <svg class="atlas-map-art" viewBox="0 0 1200 640" role="img" aria-label="A stylized map of Wilmette and Evanston beside Lake Michigan" preserveAspectRatio="none">
-            <defs>
-              <linearGradient id="atlasLand" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#f7fbff" />
-                <stop offset="58%" stop-color="#edf2ff" />
-                <stop offset="100%" stop-color="#f3ecff" />
-              </linearGradient>
-              <linearGradient id="atlasLake" x1="0" y1="0" x2="0.9" y2="1">
-                <stop offset="0%" stop-color="#d9efff" />
-                <stop offset="52%" stop-color="#d7dcff" />
-                <stop offset="100%" stop-color="#e8dcff" />
-              </linearGradient>
-              <filter id="softBlur" x="-20%" y="-20%" width="140%" height="140%">
-                <feGaussianBlur stdDeviation="18" />
-              </filter>
-            </defs>
-            <rect width="1200" height="640" rx="30" fill="url(#atlasLand)" />
-            <circle cx="160" cy="90" r="115" fill="#dcecff" opacity="0.55" filter="url(#softBlur)" />
-            <circle cx="700" cy="550" r="150" fill="#e7ddff" opacity="0.55" filter="url(#softBlur)" />
-            <path class="atlas-lake" d="M925,-10 C870,74 914,128 866,197 C816,270 845,326 796,385 C748,444 768,519 720,650 L1220,650 L1220,-10 Z" fill="url(#atlasLake)" />
-            <path class="atlas-shore" d="M925,-10 C870,74 914,128 866,197 C816,270 845,326 796,385 C748,444 768,519 720,650" />
-
-            <g class="atlas-contours">
-              <path d="M90,114 C295,55 484,74 680,142" />
-              <path d="M54,213 C270,160 487,176 755,251" />
-              <path d="M34,342 C252,284 485,302 748,367" />
-              <path d="M68,484 C305,424 510,443 720,505" />
-              <path d="M190,592 C360,530 545,544 696,590" />
-            </g>
-
-            <g class="atlas-roads">
-              <path d="M182,5 L211,635" />
-              <path d="M380,4 C392,170 366,320 408,636" />
-              <path d="M590,2 C570,174 620,330 598,638" />
-              <path d="M45,174 C280,195 490,176 858,218" />
-              <path d="M40,357 C300,337 514,361 805,398" />
-              <path d="M80,516 C280,482 518,508 753,548" />
-            </g>
-
-            <g class="atlas-rail">
-              <path d="M692,-10 C650,120 680,270 660,414 C647,507 630,582 618,650" />
-            </g>
-
-            <g class="atlas-city-labels">
-              <text x="230" y="122">WILMETTE</text>
-              <text x="570" y="350">EVANSTON</text>
-              <text x="635" y="602" class="atlas-small-label">CHICAGO ↓</text>
-              <text x="1015" y="355" class="atlas-lake-label" transform="rotate(90 1015 355)">LAKE MICHIGAN</text>
-            </g>
-          </svg>
-
-          <div class="atlas-map-heading">
-            <span>ILLINOIS · UNITED STATES</span>
-            <strong>Chicago North Shore</strong>
-          </div>
-          <p class="atlas-map-instruction">Select a pin to see the rink notes.</p>
-          <div id="atlas-markers" class="atlas-markers"></div>
-          <article id="atlas-popup" class="atlas-popup" aria-live="polite" aria-hidden="true"></article>
-          <div class="map-legend">
-            <span><i class="legend-dot favorite"></i> Home rink</span>
-            <span><i class="legend-dot standard"></i> Reviewed rink</span>
-          </div>
+      <div class="map-frame google-map-frame">
+        <iframe
+          class="google-rink-map"
+          src="https://www.google.com/maps/d/embed?mid=1QF0tQOCegy9puQzkoFsTiOeU6mW1i3s&ehbc=2E312F"
+          title="Subin on Ice rink map"
+          loading="lazy"
+          allowfullscreen
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        <div class="map-footer-bar">
+          <p>Each pin marks a rink I have personally skated.</p>
+          <a
+            class="map-external-link"
+            href="https://www.google.com/maps/d/viewer?mid=1QF0tQOCegy9puQzkoFsTiOeU6mW1i3s"
+            target="_blank"
+            rel="noopener noreferrer">
+            Open the full map <span aria-hidden="true">↗</span>
+          </a>
         </div>
-        <noscript>
-          <p class="map-fallback">JavaScript is required to display the rink pins.</p>
-        </noscript>
       </div>
     </section>
 
@@ -199,7 +150,6 @@
     <span>Built as a growing personal rink archive.</span>
     <span id="copyright-year"></span>
   </footer>
-
   <script src="rink-data.js"></script>
   <script src="script.js"></script>
 </body>
