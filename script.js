@@ -1,29 +1,113 @@
 (function () {
   const menuButton = document.querySelector('.menu-button');
   const navLinks = document.querySelector('.nav-links');
+  const placesToggle = document.querySelector('.nav-dropdown-toggle');
+  const placesMenu = document.getElementById('places-menu');
+
+  const closePlacesMenu = () => {
+    if (!placesToggle || !placesMenu) return;
+    placesMenu.classList.remove('is-open');
+    placesToggle.setAttribute('aria-expanded', 'false');
+  };
 
   if (menuButton && navLinks) {
     menuButton.addEventListener('click', () => {
       const open = navLinks.classList.toggle('is-open');
       menuButton.setAttribute('aria-expanded', String(open));
+      if (!open) closePlacesMenu();
     });
 
     navLinks.querySelectorAll('a').forEach((link) => {
       link.addEventListener('click', () => {
         navLinks.classList.remove('is-open');
         menuButton.setAttribute('aria-expanded', 'false');
+        closePlacesMenu();
       });
     });
   }
 
   const pad = (number) => String(number).padStart(2, '0');
+  const pluralize = (count, singular, plural) => count === 1 ? singular : plural;
   const cities = new Set(RINKS.map((rink) => rink.city));
   const states = new Set(RINKS.map((rink) => rink.state));
+  const countries = new Set(RINKS.map((rink) => rink.country));
 
-  document.getElementById('rink-count').textContent = pad(RINKS.length);
-  document.getElementById('city-count').textContent = pad(cities.size);
-  document.getElementById('state-count').textContent = pad(states.size);
+  const updateStat = (countId, labelId, count, singular, plural) => {
+    const countNode = document.getElementById(countId);
+    const labelNode = document.getElementById(labelId);
+    if (countNode) countNode.textContent = pad(count);
+    if (labelNode) labelNode.textContent = pluralize(count, singular, plural);
+  };
+
+  updateStat('rink-count', 'rink-label', RINKS.length, 'Rink', 'Rinks');
+  updateStat('city-count', 'city-label', cities.size, 'City', 'Cities');
+  updateStat('state-count', 'state-label', states.size, 'State', 'States');
+  updateStat('country-count', 'country-label', countries.size, 'Country', 'Countries');
   document.getElementById('copyright-year').textContent = `© ${new Date().getFullYear()} Subin`;
+
+  if (placesMenu && placesToggle) {
+    const placeTree = new Map();
+
+    RINKS.forEach((rink) => {
+      if (!placeTree.has(rink.country)) placeTree.set(rink.country, new Map());
+      const country = placeTree.get(rink.country);
+      if (!country.has(rink.state)) country.set(rink.state, new Map());
+      const state = country.get(rink.state);
+      if (!state.has(rink.city)) state.set(rink.city, []);
+      state.get(rink.city).push(rink);
+    });
+
+    placesMenu.innerHTML = `
+      <div class="places-menu-heading">Browse the archive</div>
+      ${Array.from(placeTree.entries()).map(([countryName, countryStates]) => {
+        const countryCount = Array.from(countryStates.values())
+          .flatMap((cityMap) => Array.from(cityMap.values()))
+          .flat().length;
+
+        return `
+          <div class="places-country">
+            <a class="places-country-link" href="#archive">
+              <span>${countryName}</span><small>${countryCount} ${pluralize(countryCount, 'rink', 'rinks')}</small>
+            </a>
+            ${Array.from(countryStates.entries()).map(([stateName, stateCities]) => {
+              const stateCount = Array.from(stateCities.values()).flat().length;
+              return `
+                <div class="places-state">
+                  <a class="places-state-link" href="#archive">
+                    <span>${stateName}</span><small>${stateCount}</small>
+                  </a>
+                  <div class="places-city-list">
+                    ${Array.from(stateCities.entries()).map(([cityName, cityRinks]) => `
+                      <div class="places-city-group">
+                        <span class="places-city-name">${cityName}</span>
+                        ${cityRinks.map((rink) => `
+                          <a href="review.html?id=${encodeURIComponent(rink.id)}">
+                            <span>${rink.shortName}</span><small>View review →</small>
+                          </a>
+                        `).join('')}
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+      }).join('')}
+    `;
+
+    placesToggle.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const open = placesMenu.classList.toggle('is-open');
+      placesToggle.setAttribute('aria-expanded', String(open));
+    });
+
+    placesMenu.addEventListener('click', (event) => event.stopPropagation());
+    document.addEventListener('click', closePlacesMenu);
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closePlacesMenu();
+    });
+  }
 
   const averageRating = (rink) => {
     const values = Object.values(rink.ratings);

@@ -24,6 +24,12 @@
     </a>
     <nav class="nav-links" aria-label="Main navigation">
       <a href="#map">Map</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="places-menu">
+          Places <span aria-hidden="true">⌄</span>
+        </button>
+        <div id="places-menu" class="nav-dropdown-menu" aria-label="Browse reviews by place"></div>
+      </div>
       <a href="#archive">Archive</a>
       <a href="#rating-guide">Rating Guide</a>
       <a href="#about">About</a>
@@ -43,9 +49,57 @@
         <a class="text-link" href="#archive">Read the reviews <span aria-hidden="true">→</span></a>
       </div>
       <div class="hero-stats" aria-label="Archive statistics">
-        <div><strong id="rink-count">02</strong><span>Rinks</span></div>
-        <div><strong id="city-count">02</strong><span>Cities</span></div>
-        <div><strong id="state-count">01</strong><span>State</span></div>
+        <div><strong id="rink-count">02</strong><span id="rink-label">Rinks</span></div>
+        <div><strong id="city-count">02</strong><span id="city-label">Cities</span></div>
+        <div><strong id="state-count">01</strong><span id="state-label">State</span></div>
+        <div><strong id="country-count">01</strong><span id="country-label">Country</span></div>
+      </div>
+
+      <div class="hero-skate-art" aria-hidden="true">
+        <svg viewBox="0 0 560 520" role="img" focusable="false">
+          <defs>
+            <linearGradient id="bootGradient" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#f7fbff" />
+              <stop offset="48%" stop-color="#dcecff" />
+              <stop offset="100%" stop-color="#cbbfff" />
+            </linearGradient>
+            <linearGradient id="bladeGradient" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#79aee5" />
+              <stop offset="100%" stop-color="#8068d0" />
+            </linearGradient>
+            <filter id="skateShadow" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="24" stdDeviation="22" flood-color="#6671b8" flood-opacity=".18" />
+            </filter>
+          </defs>
+
+          <path class="skate-halo" d="M74 274C93 126 250 42 387 101c133 57 169 225 83 326-84 99-273 92-362 9-42-39-51-101-34-162Z" />
+
+          <g filter="url(#skateShadow)">
+            <path class="skate-boot" d="M164 62c38 18 78 20 116 7l28 143c10 49 37 83 89 104 57 23 87 60 77 105-11 48-58 73-126 69l-197-11c-45-3-72-33-64-72l37-184c10-50 10-121 40-161Z" />
+            <path class="skate-panel" d="M165 67c30 18 69 20 110 8l20 102c-32 11-74 10-113-5-15-6-29-14-40-24 3-31 8-61 23-81Z" />
+            <path class="skate-sole" d="M103 427c77 20 255 30 363-1-2 27-31 49-78 57l-250-12c-28-2-43-18-35-44Z" />
+
+            <g class="skate-eyelets">
+              <circle cx="191" cy="152" r="5" /><circle cx="210" cy="184" r="5" />
+              <circle cx="229" cy="216" r="5" /><circle cx="249" cy="248" r="5" />
+              <circle cx="269" cy="280" r="5" />
+            </g>
+            <g class="skate-laces">
+              <path d="M190 152l79 128M210 184l59 96M229 216l40 64M249 248l20 32" />
+              <path d="M191 152l55-16M210 184l53-14M229 216l51-11M249 248l48-8" />
+            </g>
+
+            <path class="skate-support" d="M160 468v23M356 477v18" />
+            <path class="skate-blade" d="M119 497c94 20 263 21 371-2-23 28-60 41-115 43H188c-33-2-56-15-69-41Z" />
+          </g>
+
+          <path class="skate-scratch" d="M38 449c77 46 191 73 331 63 79-6 127-24 160-46" />
+          <g class="skate-sparkles">
+            <path d="M452 112v38M433 131h38" />
+            <path d="M103 214v24M91 226h24" />
+            <circle cx="480" cy="183" r="5" />
+          </g>
+        </svg>
       </div>
       <div class="blade-line" aria-hidden="true"></div>
     </section>
