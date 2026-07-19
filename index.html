@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <!-- Photo cache fix v6.1 -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Subin on Ice — a figure skater's personal archive of the ice rinks she has skated." />
@@ -10,7 +11,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles-v6.css" />
+
+  <style>
+    @media (max-width: 720px) {
+      .map-frame > div[style*="height:620px"] { height: 500px !important; }
+      .map-frame iframe[title="Subin on Ice rink map"] { height: 564px !important; }
+    }
+  </style>
 </head>
 <body>
   <div class="page-glow page-glow-one" aria-hidden="true"></div>
@@ -67,24 +75,16 @@
         </div>
         <p>Tap a pin to preview a rink, then open the full review.</p>
       </div>
-      <div class="map-frame google-map-frame">
-        <iframe
-          class="google-rink-map"
-          src="https://www.google.com/maps/d/embed?mid=1QF0tQOCegy9puQzkoFsTiOeU6mW1i3s&ehbc=2E312F"
-          title="Subin on Ice rink map"
-          loading="lazy"
-          allowfullscreen
-          referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
-        <div class="map-footer-bar">
-          <p>Each pin marks a rink I have personally skated.</p>
-          <a
-            class="map-external-link"
-            href="https://www.google.com/maps/d/viewer?mid=1QF0tQOCegy9puQzkoFsTiOeU6mW1i3s"
-            target="_blank"
-            rel="noopener noreferrer">
-            Open the full map <span aria-hidden="true">↗</span>
-          </a>
+      <div class="map-frame" style="padding:12px; overflow:hidden;">
+        <div style="position:relative; width:100%; height:620px; overflow:hidden; border-radius:25px; background:#eef2ff;">
+          <iframe
+            src="https://www.google.com/maps/d/embed?mid=1QF0tQOCegy9puQzkoFsTiOeU6mW1i3s&ehbc=2E312F&hl=en"
+            title="Subin on Ice rink map"
+            loading="lazy"
+            allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade"
+            style="position:absolute; top:-64px; left:0; width:100%; height:684px; min-width:100%; border:0; display:block;">
+          </iframe>
         </div>
       </div>
     </section>
@@ -150,7 +150,7 @@
     <span>Built as a growing personal rink archive.</span>
     <span id="copyright-year"></span>
   </footer>
-  <script src="rink-data.js"></script>
-  <script src="script.js"></script>
+  <script src="rink-data-v6.js"></script>
+  <script src="script-v6.js"></script>
 </body>
 </html>
