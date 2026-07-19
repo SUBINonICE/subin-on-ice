@@ -128,10 +128,11 @@
       card.className = `rink-card rink-card-${rink.accent}`;
       card.innerHTML = `
         <a class="rink-card-link" href="review.html?id=${encodeURIComponent(rink.id)}" aria-label="Read the ${rink.name} review">
-          <div class="rink-visual">
+          <div class="rink-visual ${rink.cardImage ? 'has-photo' : ''}">
+            ${rink.cardImage ? `<img src="${rink.cardImage}" alt="${rink.imageAlt || rink.name}" loading="lazy" />` : ''}
             <div class="rink-number">${String(index + 1).padStart(2, '0')}</div>
             <span class="rink-badge">${rink.badge}</span>
-            <div class="rink-placeholder-copy">PHOTO<br />COMING SOON</div>
+            ${rink.cardImage ? '' : '<div class="rink-placeholder-copy">PHOTO<br />COMING SOON</div>'}
             <div class="rink-scratch" aria-hidden="true"></div>
           </div>
           <div class="rink-card-body">

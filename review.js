@@ -30,10 +30,11 @@
 
   root.innerHTML = `
     <section class="review-hero review-hero-${rink.accent}">
-      <div class="review-hero-art" aria-label="Photo placeholder">
+      <figure class="review-hero-art ${rink.image ? 'has-photo' : ''}">
+        ${rink.image ? `<img src="${rink.image}" alt="${rink.imageAlt || rink.name}" />` : '<div>PHOTO<br />COMING SOON</div>'}
         <span>${rink.badge}</span>
-        <div>PHOTO<br />COMING SOON</div>
-      </div>
+        ${rink.image && rink.photoCaption ? `<figcaption>${rink.photoCaption}</figcaption>` : ''}
+      </figure>
       <div class="review-hero-copy">
         <div class="eyebrow">${rink.city.toUpperCase()}, ${rink.stateCode}</div>
         <h1>${rink.name}</h1>

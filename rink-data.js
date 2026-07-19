@@ -14,6 +14,10 @@ const RINKS = [
     sessions: ["Public Skate", "Freestyle Session"],
     quickTake: "I feel lucky to call this rink my home rink.",
     accent: "blue",
+    image: "images/robert-crown-rink.webp",
+    cardImage: "images/robert-crown-rink-card.webp",
+    imageAlt: "A wide view of the ice rink inside Robert Crown Ice Complex in Evanston.",
+    photoCaption: "Robert Crown Ice Complex, photographed by Subin in 2026.",
     ratings: {
       "Ice Quality": 5,
       "Practice Space": 4,

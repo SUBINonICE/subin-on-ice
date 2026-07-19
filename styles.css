@@ -881,3 +881,82 @@ img { height: auto; }
   }
 }
 
+/* Robert Crown photo support */
+.rink-visual.has-photo {
+  background: #dfe9f7;
+}
+
+.rink-visual.has-photo::before {
+  background: linear-gradient(180deg, rgba(19,31,62,.06), rgba(19,31,62,.3));
+  z-index: 1;
+}
+
+.rink-visual.has-photo > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 58%;
+}
+
+.rink-visual.has-photo .rink-number,
+.rink-visual.has-photo .rink-badge,
+.rink-visual.has-photo .rink-scratch {
+  z-index: 2;
+}
+
+.rink-visual.has-photo .rink-number {
+  color: rgba(255,255,255,.92);
+  text-shadow: 0 2px 18px rgba(14,25,56,.34);
+}
+
+.review-hero-art.has-photo {
+  min-height: 620px;
+  background: #dfe9f7;
+}
+
+.review-hero-art.has-photo::before {
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(13,24,50,.02) 50%, rgba(13,24,50,.3) 100%);
+}
+
+.review-hero-art.has-photo > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.review-hero-art.has-photo > span {
+  z-index: 2;
+}
+
+.review-hero-art figcaption {
+  position: absolute;
+  z-index: 2;
+  left: 26px;
+  right: 26px;
+  bottom: 22px;
+  margin: 0;
+  color: rgba(255,255,255,.94);
+  font-size: .84rem;
+  line-height: 1.45;
+  text-shadow: 0 2px 14px rgba(13,24,50,.55);
+}
+
+@media (max-width: 720px) {
+  .review-hero-art.has-photo {
+    min-height: 390px;
+  }
+
+  .review-hero-art figcaption {
+    left: 18px;
+    right: 18px;
+    bottom: 16px;
+    font-size: .76rem;
+  }
+}
+
